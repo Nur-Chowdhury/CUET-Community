@@ -17,6 +17,11 @@ const userSlice = createSlice({
         unsetReceiver: (state) => {
             state.receiver = undefined;
         },
+        updateCurrentUserContacts: (state, action) => {
+            if (state.currentUser) {
+                state.currentUser.contactList = action.payload;
+            }
+        },
         signInStart: (state) => {
             state.loading = true; 
             state.error = null;
@@ -61,6 +66,7 @@ export const {
     updateFailure,
     setReceiver,
     unsetReceiver,
+    updateCurrentUserContacts,
 } = userSlice.actions;
 
 export default userSlice.reducer;

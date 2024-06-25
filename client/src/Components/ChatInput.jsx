@@ -4,6 +4,7 @@ import {IoMdSend} from "react-icons/io";
 import Picker from "emoji-picker-react";
 import { useDispatch, useSelector } from 'react-redux';
 import { setMessg} from '../redux/slices/commentSlice'
+import { updateCurrentUserContacts } from '../redux/slices/userSlice';
 
 
 export default function ChatInput() {
@@ -26,7 +27,6 @@ export default function ChatInput() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(currentUser);
         try {
             const formData = {
                 from: currentUser.studentID,
@@ -42,6 +42,24 @@ export default function ChatInput() {
             });
             dispatch(setMessg());
             setMsg("");
+            console.log("pqr");
+
+            let contact = {
+                userName: receiver.userName,
+                studentID: receiver.studentID,
+            };
+    
+            // Add profile if exists
+            if (receiver.profile) {
+                contact.profile = receiver.profile;
+            }
+            const index = currentUser.contactList.findIndex((c) => c.studentID === contact.studentID);
+            console.log(contact, index);
+            if(index===-1){
+                const updatedContactList = [...currentUser.contactList, contact];
+                console.log(updatedContactList);
+                dispatch(updateCurrentUserContacts(updatedContactList));
+            }
         } catch (error) {
             setPublishError('Something went wrong');
         }

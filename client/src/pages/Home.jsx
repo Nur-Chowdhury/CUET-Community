@@ -13,6 +13,7 @@ import { setReceiver } from '../redux/slices/userSlice';
 
 export default function Home() {
   const {currentUser} = useSelector((state) => state.user);
+  console.log(currentUser);
   const {allComments} = useSelector((state) => state.comment);
   const dispatch = useDispatch();
 
@@ -72,13 +73,13 @@ export default function Home() {
               {
                 currentUser?.contactList?.length ? (
                   currentUser.contactList.map((contact, index) => (
-                    <div onClick={() => handleClick(contact.studentID)} key={index} className=' flex items-center py-2 gap-2 border-y-2 border-y-black'>
+                    <div onClick={() => handleClick(contact.studentID)} key={index} className=' flex items-center py-2 gap-2 border-y-2 border-y-black dark:border-y-white cursor-pointer'>
                       <img
                         src={contact?.profile ?? profile}
                         alt={contact?.userName}
-                        className='w-14 h14 object-cover rounded-full'
+                        className='w-10 h10 object-cover rounded-full'
                       />
-                      <p className=' py-2 text-xl font-bold'>{contact.userName}</p>
+                      <p className=' py-2 text-lg font-bold'>{contact.userName}</p>
                     </div>
                   ))
                 ):(

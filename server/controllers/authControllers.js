@@ -44,7 +44,6 @@ export const signup = async (req, res, next) => {
       });
 
       try {
-        // console.log(newUser.studentId);
         await newUser.save();
         res.json('Signup successful');
       } catch (error) {
@@ -80,7 +79,6 @@ export const signin = async (req, res, next) => {
 
     const {password: pass, ...rest} = validUser._doc;
 
-    //console.log(rest);
     const contactList = [];
     for (const contact of rest.contacts) {
       const usr = await User.findById(contact.toString());
@@ -93,9 +91,7 @@ export const signin = async (req, res, next) => {
       }
     }
 
-    console.log(contactList);
     rest.contactList = contactList;
-    console.log(rest);
 
     res
       .status(200)

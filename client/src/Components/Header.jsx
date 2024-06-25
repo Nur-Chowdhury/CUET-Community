@@ -6,7 +6,7 @@ import {AiOutlineSearch} from 'react-icons/ai';
 import {FaMoon, FaSun} from 'react-icons/fa';
 import { toggleTheme } from '../redux/slices/themeSlice';
 import {useSelector, useDispatch} from 'react-redux';
-import {signoutSuccess} from '../redux/slices/userSlice'
+import {setReceiver, signoutSuccess} from '../redux/slices/userSlice'
 import {setCommentsNull} from  '../redux/slices/commentSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -49,6 +49,7 @@ export default function Header() {
             }else{
                 dispatch(setCommentsNull());
                 dispatch(signoutSuccess());
+                dispatch(setReceiver());
             }
         } catch (error) {
             console.log(error.message);

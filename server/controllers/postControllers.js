@@ -40,17 +40,19 @@ export const getPosts = async (req, res, next) => {
 
 
 export const postLike = async (req, res) => {
+
+  if(!req.user){
+    return next(errorHandler(403, "Please Sign In!"))
+  }
+
   try {
       const post = await Post.findById(req.params.postId);
       if (!post) {
           return res.status(404).send('Post not found');
       }
-      //console.log(req.user.id);
-      await post.toggleLike(req.user.id);  // Assuming req.user.id contains the ID of the current user
-      //console.log(post);
+      await post.toggleLike(req.user.id);
       res.status(200).send(post);
   } catch (error) {
-      console.log(error);
       res.status(500).send(error.message);
   }
 } 

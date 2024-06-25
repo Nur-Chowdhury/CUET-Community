@@ -15,6 +15,11 @@ export const signout = (req, res, next) => {
 }
 
 export const findUserById = async (req, res, next) => { 
+
+    if(!req.user){
+        return next(errorHandler(403, "Please Sign In!"))
+    }
+
     try {
         const id = req.params.id;
         const user = await User.findOne({studentID: id});
@@ -26,12 +31,11 @@ export const findUserById = async (req, res, next) => {
 }
 
 export const find = async (req, res, next) => {
-    // if(!req.user){
-    //     return next(errorHandler(403, "Please Sign In!"))
-    // }
+    if(!req.user){
+        return next(errorHandler(403, "Please Sign In!"))
+    }
 
     const { searchTerm, searchType } = req.query;
-    console.log(req.user);
     if(searchType==1){
         try {
             const startIndex = parseInt(req.query.startIndex) || 0;

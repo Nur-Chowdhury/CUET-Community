@@ -5,7 +5,7 @@ import {addMessage, getAllMessage} from '../controllers/messageControllers.js';
 
 const router = express.Router();
 
-router.post('/addMessage', addMessage);
-router.post('/getAllMessages', getAllMessage);
+router.post('/addMessage', varifyToken, addMessage);
+router.post('/getAllMessages', varifyToken, getAllMessage);
 
 export default router;

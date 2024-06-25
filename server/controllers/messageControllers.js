@@ -4,17 +4,19 @@ import { errorHandler } from "../utils/errorHandler.js";
 import mongoose from 'mongoose';
 
 export const addMessage = async (req, res, next) => {
+
+    if(!req.user){
+        return next(errorHandler(403, "Please Sign In!"))
+    }
+
     const {from, to, message, image} = req.body;
-    // if (from !== req.user.id) {
-    //     return next(
-    //       errorHandler(403, 'You are not allowed to send this message!')
-    //     );
-    // }
+    if (from !== req.user.id) {
+        return next(
+          errorHandler(403, 'You are not allowed to send this message!')
+        );
+    }
     const a = await User.findOne({studentID: from});
     const b = await User.findOne({studentID: to});
-    //const c = await User.find({firstName: { $regex: "us", $options: "i" }});
-    //console.log(c);
-    //console.log(a._id.ObjectId);
     if(message){
         const newMessage = new Message({
             message: { text: message},
@@ -27,7 +29,6 @@ export const addMessage = async (req, res, next) => {
             await b.addContact(a._id);
             await a.addContact(b._id);
         } catch (error) {
-            console.log(error);
             next(error);
         }
     }
@@ -47,6 +48,11 @@ export const addMessage = async (req, res, next) => {
 }; 
 
 export const getAllMessage = async (req, res, next) => {
+
+    if(!req.user){
+        return next(errorHandler(403, "Please Sign In!"))
+    }
+
     try {
         const { from, to } = req.body;
 
@@ -69,7 +75,6 @@ export const getAllMessage = async (req, res, next) => {
 
         res.json(projectMessages);
     } catch (error) {
-        console.log(error);
         next(error);
     }
 };
