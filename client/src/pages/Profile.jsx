@@ -5,7 +5,7 @@ import { FaEdit, FaHome } from "react-icons/fa";
 import { FiMessageCircle } from "react-icons/fi";
 import { Button } from 'flowbite-react';
 import UserPosts from '../Components/UserPosts';
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { IoLocation } from "react-icons/io5";
 import { setReceiver } from '../redux/slices/userSlice';
 import MessageBox from '../Components/MessageBox';
@@ -58,7 +58,7 @@ export default function Profile() {
                     </div>
                     <div className='flex justify-center items-center md:justify-start mt-4 md:mt-0'>
                         {user?.studentID === currentUser?.studentID ? (
-                                <Button className=' bg-blue-600'><span className='mr-1'>Edit Profile</span> <div className=' place-content-center'><FaEdit /></div></Button>
+                                <Button className=' bg-blue-600'><Link to='/edit' className='mr-1'>Edit Profile</Link> <div className=' place-content-center'><FaEdit /></div></Button>
                             ):(
                                 <Button className=' bg-blue-600'><span className='mr-1' onClick={handleClick}>Message</span> <div className=' place-content-center'><FiMessageCircle /></div></Button>
                             )}

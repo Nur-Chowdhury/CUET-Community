@@ -15,11 +15,32 @@ export default function PostCard({post, comments}) {
     const [showComments, setShowComments] = useState(null);
     const {loading, error} = useSelector((state) => state.comment);
     
-    //console.log(comments);
+    //console.log(comments); 
     const id = post.userId;
 
-    const handleLike = () => {
-        
+    const [pst, setPst] = useState(post);
+
+    const [likes, setLikes] = useState(pst.likes.length);
+
+    const handleLike = async () => {
+        try {
+            const response = await fetch(`/api/post/${pst._id}/like`, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+            if(response.ok){
+                const ps = await response.json();
+                setPst(ps);
+                setLikes(ps.likes.length);
+            }
+            // setLiked(post.likes.includes(currentUser.studentID));
+            // setLikesCount(post.likes.length);
+        } catch (error) {
+            console.error('Error toggling like:', error);
+        }
     }
 
 
@@ -37,16 +58,16 @@ export default function PostCard({post, comments}) {
   return (
     <div className='mb-2 bg-gray-300 dark:bg-[rgb(11,11,11)] p-4 rounded-xl'>
         <div className='flex gap-3 items-center mb-2'>
-            <Link to={"/profile/"+ post?.userId}>
+            <Link to={"/profile/"+ pst?.userId}>
                 <img
-                    src={profile}
+                    src={user?.profile ?? profile}
                     alt='profile'
                     className='w-14 h-14 object-cover rounded-full'
                 /> 
             </Link>
             <div className='w-full flex justify-between'>
                 <div className=''>
-                    <Link to={"/profile/" + post?.userId}>
+                    <Link to={"/profile/" + pst?.userId}>
                         <p className='font-medium text-lg'>
                             {user?.firstName} {user?.lastName}
                         </p> 
@@ -54,7 +75,7 @@ export default function PostCard({post, comments}) {
                 </div>
 
                 <span className='text-ascent-2'>
-                    {moment(post?.createdAt ?? "2023-05-25").fromNow()}
+                    {moment(pst?.createdAt ?? "2023-05-25").fromNow()}
                 </span>
             </div>
         </div>
@@ -62,12 +83,12 @@ export default function PostCard({post, comments}) {
         {/* post body */}
         <div>
             <p className='text-ascent-2'>
-                {showAll === post?._id
-                ? post?.content
-                : post?.content.slice(0, 300)}
+                {showAll === pst?._id
+                ? pst?.content
+                : pst?.content.slice(0, 300)}
 
-            {post?.content?.length > 301 &&
-                (showAll === post?._id ? (
+            {pst?.content?.length > 301 &&
+                (showAll === pst?._id ? (
                     <span
                         className='text-blue ml-2 font-medium cursor-pointer'
                         onClick={() => setShowAll(0)}
@@ -77,17 +98,17 @@ export default function PostCard({post, comments}) {
                 ) : (
                     <span
                         className='text-blue ml-2 font-medium cursor-pointer'
-                        onClick={() => setShowAll(post?._id)}
+                        onClick={() => setShowAll(pst?._id)}
                     >
                         Show More
                     </span>
                 ))}
             </p>
 
-            {post?.image && (
-                <a href={post?.image}>
+            {pst?.image && (
+                <a href={pst?.image}>
                     <img
-                        src={post?.image}
+                        src={pst?.image}
                         alt='post image'
                         className='w-full mt-2 rounded-lg'
                     />
@@ -99,30 +120,30 @@ export default function PostCard({post, comments}) {
         <div className='mt-4 flex justify-between items-center px-3 py-2 text-ascent-2
         text-base border-t border-[#66666645]'>
             <p className='flex gap-2 items-center text-base cursor-pointer' onClick={handleLike}>
-                {post?.likes?.includes(user?.studentId) ? (
-                    <BiSolidLike size={20} color='blue' />
+                {pst?.likes?.includes(user?.studentID) ? (
+                    <BiSolidLike size={30} color='blue' />
                 ) : (
-                    <BiLike size={20} />
+                    <BiLike size={30} />
                 )}
-                {post?.likes ? post.likes.length : 0 } Likes
+                {likes} Like{likes > 1 && 's'}
             </p>
 
             <p
                 className='flex gap-2 items-center text-base cursor-pointer'
                 onClick={() => {
-                    setShowComments(showComments === post._id ? null : post._id);
+                    setShowComments(showComments === pst._id ? null : pst._id);
                     //console.log(showComments);
                 }}
             >
-                <BiComment size={20} />
-                {comments?.length ? comments.length: 0} Comments
+                <BiComment size={30} />
+                {comments?.length ? comments.length: 0} Comment{comments?.length > 1 && 's'}
             </p>
         </div>
 
         {/* all comments */}
-        {showComments === post?._id && (
+        {showComments === pst?._id && (
             <div className='w-full mt-4 border-t border-[#66666645] pt-4 '>
-                <CommentForm id={post._id} userId={currentUser.studentID}/>
+                <CommentForm id={pst._id} userId={currentUser.studentID}/>
                 { loading ? (
                     <h1>Loading...</h1>
                 ) : comments?.length > 0 ? (

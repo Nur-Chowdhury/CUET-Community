@@ -15,7 +15,7 @@ const App = () => {
   //const { currentUser } = useSelector((state) => state.user);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter> 
       <Header />
       <Routes>
         {/* Public Routes */}

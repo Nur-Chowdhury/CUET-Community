@@ -29,7 +29,7 @@ export default function Posts() {
             {posts?.map((post) => (
                     <PostCard key={post?._id} post={post} comments={allComments?.filter(comment => post?._id==comment?.postId).reverse()}/>
                 )
-            )}
+            )} 
           </div>
         )
       }

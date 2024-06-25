@@ -7,6 +7,31 @@ import moment from "moment"
 export default function CommentCard({comment}) {
     const [user, setUser] = useState(null);
 
+    const [cmnt, setCmnt] = useState(comment);
+
+    const [likes, setLikes] = useState(cmnt.likes.length);
+
+    const handleLike = async () => {
+        try {
+            const response = await fetch(`/api/comment/${cmnt._id}/like`, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+            });
+            if(response.ok){
+                const cmt = await response.json();
+                setCmnt(cmt);
+                setLikes(cmt.likes.length);
+            }
+            // setLiked(post.likes.includes(currentUser.studentID));
+            // setLikesCount(post.likes.length);
+        } catch (error) {
+            console.error('Error toggling like:', error);
+        }
+    }
+
     useEffect(() => {
         if(!user){
             const fetchUser = async (id) => {
@@ -16,14 +41,14 @@ export default function CommentCard({comment}) {
             };
             fetchUser(comment.userId);
         }
-    }, [comment]);
+    }, [comment]); 
 
   return (
     <div className='w-full py-2'>
         <div className='flex gap-3 items-center mb-1'>
-            <Link to={"/profile/" + comment?.userId}>
+            <Link to={"/profile/" + cmnt?.userId}>
                 <img
-                    src={profile}
+                    src={user?.profile ?? profile}
                     alt={user?.firstName}
                     className='w-10 h-10 rounded-full object-cover'
                 />
@@ -35,20 +60,20 @@ export default function CommentCard({comment}) {
                     </p>
                 </Link>
                 <span className='text-ascent-2 text-sm'>
-                    {moment(comment?.createdAt ?? "2023-05-25").fromNow()}
+                    {moment(cmnt?.createdAt ?? "2023-05-25").fromNow()}
                 </span>
             </div>
         </div>
         <div className='ml-12'>
-            <p className='text-ascent-2'>{comment?.comment}</p>
+            <p className='text-ascent-2'>{cmnt?.comment}</p>
             <div className='mt-2 flex gap-6'>
-                <p className='flex gap-2 items-center text-base text-ascent-2 cursor-pointer'>
-                    {comment?.likes?.includes(user?._id) ? (
+                <p className='flex gap-2 items-center text-base text-ascent-2 cursor-pointer' onClick={handleLike}>
+                    {cmnt?.likes?.includes(user?.studentID) ? (
                         <BiSolidLike size={20} color='blue' />
                     ) : (
                         <BiLike size={20} />
                     )}
-                        {comment?.likes ? comment.likes.length: 0} Likes
+                        {likes} Like{likes > 1 && 's'}
                 </p>    
             </div>
         </div>
