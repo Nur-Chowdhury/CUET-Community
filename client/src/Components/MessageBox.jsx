@@ -123,14 +123,14 @@ export default function MessageBox() {
   return (
     receiver && (
       <div className='fixed bottom-0 right-40 h-[460px] w-[330px] bg-gray-400 dark:bg-[rgb(40,40,40)] rounded-t-lg flex flex-col'>
-        <div className=' w-full min-h-10p flex items-center justify-between px-2'>
+        <div className=' w-full min-h-10p flex items-center justify-between px-2 border-b-2 border-b-black'>
           <div className='flex gap-2'>
             <img src={receiver?.profile ?? profile} alt='profile' className='w-8 h-8 rounded-full object-cover' />
             <span>{receiver?.userName}</span>
           </div>
           <IoMdClose className='right-2 h-6 w-6 cursor-pointer' onClick={handleClose} />
         </div>
-        <div className='w-full min-h-80p overflow-y-auto'>
+        <div className='w-full min-h-80p overflow-y-auto py-2'>
           {
             messages?.length ? (
               messages.map((message, index) => (
