@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import {Label, TextInput, Button, Spinner, Alert} from 'flowbite-react'
+import { signupRoute } from '../utils/ApiRoutes';
 
 export default function SignUp() {
 
@@ -28,7 +29,7 @@ export default function SignUp() {
     try {
       setLoading(true);
       setErrorMessage(null);
-      const res = await fetch('/api/auth/signup',{
+      const res = await fetch(`${signupRoute}`,{
         method: 'POST',
         headers:{'Content-Type': 'application/json'},
         body: JSON.stringify(formData),

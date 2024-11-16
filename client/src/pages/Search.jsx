@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import UserCard from '../Components/UserCard';
 import PostCard from '../Components/PostCard';
 import { useSelector } from 'react-redux';
+import { findUsersRoute } from '../utils/ApiRoutes';
 
 export default function Search() {
   const [users, setUsers] = useState([]);
@@ -30,7 +31,7 @@ export default function Search() {
           searchTerm: searchTermFromUrl || '',
           searchType: searchType.toString(),
         }).toString();
-        const res = await fetch(`/api/user/find/users?${search}`);
+        const res = await fetch(`${findUsersRoute}?${search}`);
         if (!res.ok) {
           setLoading(false);
           return;
@@ -53,7 +54,7 @@ export default function Search() {
           searchTerm: searchTermFromUrl || '',
           searchType: searchType.toString(),
         }).toString();
-        const res = await fetch(`/api/user/find/users?${search}`);
+        const res = await fetch(`${findUsersRoute}?${search}`);
         if (!res.ok) {
           setLoading(false);
           return;

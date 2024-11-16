@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useSelector } from 'react-redux';
 import PostCard from './PostCard';
 import PostCreate from './PostCreate';
+import { getPostsRoute } from '../utils/ApiRoutes';
 
 export default function Posts() {
 
@@ -11,7 +12,7 @@ export default function Posts() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch('/api/post/getPosts');
+      const res = await fetch(`${getPostsRoute}`);
       const data = await res.json();
       setPosts(data);
     };

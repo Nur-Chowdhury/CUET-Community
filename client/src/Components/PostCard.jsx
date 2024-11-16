@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import {BiLike, BiSolidLike, BiComment} from 'react-icons/bi'
 import CommentForm from './CommentForm';
 import CommentCard from './CommentCard';
+import { findUserByIdRoute, postRoute } from '../utils/ApiRoutes';
 
 export default function PostCard({post, comments}) {
     const [showAll, setShowAll] = useState(0);
@@ -24,7 +25,7 @@ export default function PostCard({post, comments}) {
 
     const handleLike = async () => {
         try {
-            const response = await fetch(`/api/post/${pst._id}/like`, {
+            const response = await fetch(`${postRoute}/${pst._id}/like`, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -47,7 +48,7 @@ export default function PostCard({post, comments}) {
     useEffect(() => { 
         if(!user){
             const fetchUser = async (id) => {
-                const res = await fetch(`/api/user/findUserById/${id}`);
+                const res = await fetch(`${findUserByIdRoute}/${id}`);
                 const data = await res.json();
                 setUser(data);
             };

@@ -9,6 +9,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {setReceiver, signoutSuccess} from '../redux/slices/userSlice'
 import {setCommentsNull} from  '../redux/slices/commentSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { signoutRoute } from '../utils/ApiRoutes';
 
 export default function Header() {
 
@@ -40,7 +41,7 @@ export default function Header() {
 
     const handleSignOut = async () => {
         try {
-            const res = await fetch('/api/user/signout',{
+            const res = await fetch(`${signoutRoute}`,{
                 method: 'POST',
             })
             const data = await res.json();

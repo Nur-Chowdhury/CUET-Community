@@ -3,6 +3,7 @@ import profile from "../assets/userprofile.png"
 import {Textarea, Button, Alert} from 'flowbite-react'
 import {commentStart, commentsFailure, commentsSuccess} from '../redux/slices/commentSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import { commentRoute } from '../utils/ApiRoutes';
 
 export default function CommentForm({ userId, id }) {
     const {commentLoading, commentError} = useSelector((state) => state.comment);
@@ -14,7 +15,7 @@ export default function CommentForm({ userId, id }) {
         try {
             dispatch(commentStart());
             console.log(formData);
-            const res = await fetch(`/api/comment/create`, {
+            const res = await fetch(`${commentRoute}/create`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

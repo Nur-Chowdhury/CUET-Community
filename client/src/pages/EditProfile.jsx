@@ -15,6 +15,7 @@ import { IoAdd } from "react-icons/io5"
 import { PiPlusBold } from "react-icons/pi";
 import EducationEdit from '../Components/EducationEdit'
 import WorkEdit from '../Components/WorkEdit'
+import { updateUserRoute } from '../utils/ApiRoutes'
 
 export default function EditProfile() {
 
@@ -150,7 +151,7 @@ export default function EditProfile() {
 
     try {
       dispatch(updateStart());
-      const res = await fetch(`/api/user/update/${currentUser.studentID}`, {
+      const res = await fetch(`${updateUserRoute}/${currentUser.studentID}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

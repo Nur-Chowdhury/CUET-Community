@@ -5,6 +5,7 @@ import {useSelector} from 'react-redux'
 import {app} from "../firebase";
 import {getStorage, ref, uploadBytesResumable, getDownloadURL} from "firebase/storage"
 import {Alert, Button, FileInput, TextInput, Label} from 'flowbite-react'
+import { postCreateRoute } from '../utils/ApiRoutes';
 
 
 export default function CreatePost() {
@@ -47,7 +48,7 @@ export default function CreatePost() {
             //     setImageUploadError('Image upload failed');
             // }
             console.log(formData);
-            const res = await fetch('/api/post/create', {
+            const res = await fetch(`${postCreateRoute}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -5,6 +5,7 @@ import {TextInput, FileInput, Label, Button, Alert} from 'flowbite-react'
 import {BiImage} from 'react-icons/bi';
 import {getStorage, ref, uploadBytesResumable, getDownloadURL} from 'firebase/storage';
 import {app} from '../firebase'
+import { postCreateRoute } from '../utils/ApiRoutes';
 
 
 export default function PostCreate() {
@@ -57,7 +58,7 @@ export default function PostCreate() {
         //e.preventDefault(); 
         try {
             console.log("a", formData); 
-            const res = await fetch('/api/post/create', {
+            const res = await fetch(`${postCreateRoute}`, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',

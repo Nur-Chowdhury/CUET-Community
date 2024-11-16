@@ -3,6 +3,7 @@ import {BiLike, BiSolidLike} from 'react-icons/bi'
 import {Link} from 'react-router-dom'
 import profile from "../assets/userprofile.png"
 import moment from "moment"
+import { commentRoute, findUserByIdRoute } from '../utils/ApiRoutes'
 
 export default function CommentCard({comment}) {
     const [user, setUser] = useState(null);
@@ -13,7 +14,7 @@ export default function CommentCard({comment}) {
 
     const handleLike = async () => {
         try {
-            const response = await fetch(`/api/comment/${cmnt._id}/like`, {
+            const response = await fetch(`${commentRoute}/${cmnt._id}/like`, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
@@ -35,7 +36,7 @@ export default function CommentCard({comment}) {
     useEffect(() => {
         if(!user){
             const fetchUser = async (id) => {
-                const res = await fetch(`/api/user/findUserById/${id}`);
+                const res = await fetch(`${findUserByIdRoute}/${id}`);
                 const data = await res.json();
                 setUser(data);
             };

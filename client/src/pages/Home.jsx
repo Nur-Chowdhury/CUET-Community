@@ -8,6 +8,7 @@ import MessageBox from '../Components/MessageBox';
 import Picker from 'emoji-picker-react'
 import profile from "../assets/userprofile.png"
 import { setReceiver } from '../redux/slices/userSlice';
+import { findUserByIdRoute, getAllCommentsRoute } from '../utils/ApiRoutes';
 
 
 
@@ -19,7 +20,7 @@ export default function Home() {
 
   const handleClick = async (id) => {
     console.log(id);
-    const res = await fetch(`/api/user/findUserById/${id}`);
+    const res = await fetch(`${findUserByIdRoute}/${id}`);
     const data = await res.json();
     if(data){
       dispatch(setReceiver(data));
@@ -31,7 +32,7 @@ export default function Home() {
       const getComments = async () => {
         try {
           dispatch(getCommentsStart());
-          const res = await fetch('/api/comment/getAllComments');
+          const res = await fetch(`${getAllCommentsRoute}`);
           const data = await res.json();
           if(data.success ===false){
             dispatch(getCommentsFailure(data.message));

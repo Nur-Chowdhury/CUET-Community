@@ -11,6 +11,7 @@ import {getStorage, ref, uploadBytesResumable, getDownloadURL} from 'firebase/st
 import {app} from '../firebase'
 import { setReceiver, unsetReceiver } from '../redux/slices/userSlice'
 import ChatInput from './ChatInput'
+import { getAllMessagesRoute } from '../utils/ApiRoutes'
 
 export default function MessageBox() {
 
@@ -34,7 +35,7 @@ export default function MessageBox() {
       const fetchMessages = async () => {
           try {
               if (currentUser?.studentID && receiver?.studentID) {
-                  const res = await fetch('/api/messages/getAllMessages', {
+                  const res = await fetch(`${getAllMessagesRoute}`, {
                       method: 'POST',
                       headers: {
                           'Content-Type': 'application/json',

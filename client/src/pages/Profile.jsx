@@ -9,6 +9,7 @@ import { Link, useParams } from 'react-router-dom'
 import { IoLocation } from "react-icons/io5";
 import { setReceiver } from '../redux/slices/userSlice';
 import MessageBox from '../Components/MessageBox';
+import { findUserByIdRoute } from '../utils/ApiRoutes';
 
 
 export default function Profile() {
@@ -21,7 +22,7 @@ export default function Profile() {
 
     useEffect(() => { 
         const fetchUser = async (id) => {
-        const res = await fetch(`/api/user/findUserById/${id}`);
+        const res = await fetch(`${findUserByIdRoute}/${id}`);
         const data = await res.json();
         setUser(data);
         };

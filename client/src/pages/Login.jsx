@@ -3,6 +3,7 @@ import {Link, Navigate, useNavigate} from 'react-router-dom'
 import {Label, TextInput, Button, Spinner, Alert} from 'flowbite-react'
 import {useDispatch, useSelector} from 'react-redux';
 import { signInFailure, signInStart, signInSuccess } from '../redux/slices/userSlice';
+import { signinRoute } from '../utils/ApiRoutes';
 
 
 export default function Login() {
@@ -27,7 +28,7 @@ export default function Login() {
 
     try {
       dispatch(signInStart());
-      const res = await fetch('/api/auth/signin',{
+      const res = await fetch(`${signinRoute}`,{
         method: 'POST', 
         headers:{'Content-Type': 'application/json'},
         body: JSON.stringify(formData),

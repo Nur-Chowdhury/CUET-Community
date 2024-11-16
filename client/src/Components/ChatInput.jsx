@@ -5,6 +5,7 @@ import Picker from "emoji-picker-react";
 import { useDispatch, useSelector } from 'react-redux';
 import { setMessg} from '../redux/slices/commentSlice'
 import { updateCurrentUserContacts } from '../redux/slices/userSlice';
+import { addMessageRoute } from '../utils/ApiRoutes';
 
 
 export default function ChatInput() {
@@ -33,7 +34,7 @@ export default function ChatInput() {
                 to: receiver ? receiver.studentID : '2',
                 message: msg,
             }
-            const res = await fetch('/api/messages/addMessage', {
+            const res = await fetch(`${addMessageRoute}`, {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
