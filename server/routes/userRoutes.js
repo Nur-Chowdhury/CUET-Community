@@ -9,6 +9,6 @@ const router = express.Router();
 router.post('/signout', signout);
 router.get('/findUserById/:id', varifyToken, findUserById);
 router.get('/find/users', varifyToken, find);
-router.put('/update/:userId', varifyToken, updateUser);
+router.put('/update/:userId', varifyToken, updateUser); 
 
 export default router;

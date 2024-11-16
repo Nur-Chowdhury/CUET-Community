@@ -5,7 +5,6 @@ import {TextInput, FileInput, Label, Button, Alert} from 'flowbite-react'
 import {BiImage} from 'react-icons/bi';
 import {getStorage, ref, uploadBytesResumable, getDownloadURL} from 'firebase/storage';
 import {app} from '../firebase'
-import { useNavigate } from 'react-router-dom';
 
 
 export default function PostCreate() {
@@ -15,7 +14,6 @@ export default function PostCreate() {
     const [formData, setFormData] = useState({});
     const [uploading, setUploading] = useState(false);
     const [img, setImg] = useState(null);
-    const navigate = useNavigate();
 
     const handleUpload = async (event) => {
         const file = event.target.files[0];

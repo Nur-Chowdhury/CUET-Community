@@ -11,7 +11,7 @@ export const signout = (req, res, next) => {
             .json('Signed Out Successfully!')
     } catch (error) {
         next(error);
-    }
+    } 
 }
 
 export const findUserById = async (req, res, next) => { 

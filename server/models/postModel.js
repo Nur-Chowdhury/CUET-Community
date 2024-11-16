@@ -30,7 +30,7 @@ postSchema.methods.toggleLike = async function(studentID) {
         this.likes.splice(index, 1);  // Remove like
     }
     await this.save();
-}
+} 
 
 const Post = mongoose.model('Post', postSchema);
 

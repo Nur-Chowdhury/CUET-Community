@@ -25,10 +25,28 @@ export const addMessage = async (req, res, next) => {
         });
         try {
             const savedMessage = await newMessage.save();
-            res.status(201).json(savedMessage);
             await b.addContact(a._id);
             await a.addContact(b._id);
+
+            const sender = await User.findById(a._id);
+
+            const {password: pass, ...rest} = sender._doc;
+
+            const contactList = [];
+            for (const contact of rest.contacts) {
+                const usr = await User.findById(contact.toString());
+                if (usr) {
+                    contactList.push({
+                        userName: usr.userName,
+                        profile: usr.profile,
+                        studentID: usr.studentID,
+                    }); 
+                }
+            }
+
+            res.status(201).json(contactList);
         } catch (error) {
+            console.log(error);
             next(error);
         }
     }

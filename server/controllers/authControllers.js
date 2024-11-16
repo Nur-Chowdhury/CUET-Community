@@ -87,7 +87,7 @@ export const signin = async (req, res, next) => {
           userName: usr.userName,
           profile: usr.profile,
           studentID: usr.studentID,
-        });
+        }); 
       }
     }
 

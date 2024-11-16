@@ -67,17 +67,10 @@ export default function Profile() {
             </div>
             <div className=' w-full max-h-[600px] flex flex-col md:flex-row mt-10 lg:pl-24' id='2'>
                 <div className=' w-1/3 flex flex-col gap-8'>
-                    {/* <div className=' flex flex-col shadow-sm rounded-xl px-6 py-4 bg-gray-300 dark:bg-[rgb(11,11,11)]'>
-                        {
-                            user?.Gender? (
-                                <div className=' flex'>
-                                    <span className=' font-semibold text-lg'>{user.Gender}</span>
-                                </div>
-                            ):(<></>)
-                        }
+                    {(user?.homeTown || user?.currentCity) && <div className=' flex flex-col shadow-sm rounded-xl px-6 py-4 bg-gray-300 dark:bg-[rgb(11,11,11)] gap-4'>
                         {
                             user?.homeTown? (
-                                <div className=' flex'>
+                                <div className=' flex gap-2'>
                                     <IoLocation size={30} />
                                     <span className=''>Lives in <span className=' font-semibold text-lg'>{user.currentCity}</span></span>
                                 </div>
@@ -85,13 +78,13 @@ export default function Profile() {
                         }
                         {
                             user?.homeTown? (
-                                <div className=' flex'>
-                                    <FaHome />
+                                <div className=' flex gap-2'>
+                                    <FaHome size={30} />
                                     <span className=''> From <span className=' font-semibold text-lg'>{user.homeTown}</span></span>
                                 </div>
                             ):(<></>)
                         }
-                    </div> */}
+                    </div>}
                     {user?.education.length ? (
                             <div className=' flex flex-col shadow-sm rounded-xl px-6 py-4 bg-gray-300 dark:bg-[rgb(11,11,11)]'>
                                 <h1 className=' text-2xl font-bold'>Education:</h1>
@@ -117,7 +110,7 @@ export default function Profile() {
                         :
                         (<div className='w-full flex flex-col shadow-sm rounded-xl px-6 py-4 bg-gray-300 dark:bg-[rgb(11,11,11)]'>
                             <h1 className=' text-2xl font-bold'>Education:</h1>
-                            No Education Profile...
+                            No Education Profile to Show...
                         </div>)
                     }
                     {user?.work.length ? (
@@ -148,7 +141,7 @@ export default function Profile() {
                         :
                         ( <div className='w-full flex flex-col shadow-sm rounded-xl px-6 py-4 bg-gray-300 dark:bg-[rgb(11,11,11)]'>
                             <h1 className=' text-2xl font-bold'>Work:</h1>
-                            No Work Profile...
+                            No Work Profile to Show...
                         </div>)
                     }
                 </div>

@@ -40,9 +40,10 @@ export default function ChatInput() {
                 },
                 body: JSON.stringify(formData),
             });
+            const data = await res.json();
+            dispatch(updateCurrentUserContacts(data));
             dispatch(setMessg());
             setMsg("");
-            console.log("pqr");
 
             let contact = {
                 userName: receiver.userName,

@@ -120,7 +120,7 @@ export default function PostCard({post, comments}) {
         <div className='mt-4 flex justify-between items-center px-3 py-2 text-ascent-2
         text-base border-t border-[#66666645]'>
             <p className='flex gap-2 items-center text-base cursor-pointer' onClick={handleLike}>
-                {pst?.likes?.includes(user?.studentID) ? (
+                {pst?.likes?.includes(currentUser?.studentID) ? (
                     <BiSolidLike size={30} color='blue' />
                 ) : (
                     <BiLike size={30} />

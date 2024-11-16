@@ -18,7 +18,7 @@ const commentSchema = new mongoose.Schema(
       type: String,  // Storing studentID as string
     }],
   },
-  { timestamps: true }
+  { timestamps: true } 
 );
 
 commentSchema.methods.toggleLike = async function(studentID) {
