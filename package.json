@@ -1,7 +1,7 @@
 {
   "name": "cuet-community",
   "version": "1.0.0",
-  "description": "",
+  "description": "CUET Community application backend and build configuration",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -10,8 +10,12 @@
     "client": "npm run dev --prefix client",
     "build": "node -v && npm install && npm install --prefix client && npm run build --prefix client"
   },
+  "engines": {
+    "node": ">=18 <21",
+    "npm": ">=7"
+  },
   "keywords": [],
-  "author": "",
+  "author": "N0_oR",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
