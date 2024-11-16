@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "NODE_ENV=development nodemon server/index.js",
-    "start": "node server/index.js",
+    "start": "cross-env node server/index.js",
     "client": "npm run dev --prefix client",
     "build": "npm install && npm install --prefix client && npm run build --prefix client"
   },
@@ -22,5 +22,8 @@
     "mongoose": "^8.3.1",
     "nodemon": "^3.1.0",
     "react-circular-progressbar": "^2.1.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
