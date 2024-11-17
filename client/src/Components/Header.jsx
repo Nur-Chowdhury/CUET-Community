@@ -74,9 +74,9 @@ export default function Header() {
         </form>
       </div>
 
-      <div className="max-w-[15%] flex gap-2 md:order-2">
+      <div className=" w-[30%] xs:w-auto flex gap-2 md:order-2">
         <Button
-          className="w-8 h-8 xs:w-10 xs:h-10 inline"
+          className="h-8 xs:h-10 inline"
           color="gray"
           pill
           onClick={() => dispatch(toggleTheme())}
