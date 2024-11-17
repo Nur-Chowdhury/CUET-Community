@@ -62,7 +62,7 @@ export default function Header() {
         </Link>
       </div>
 
-      <div className="w-[60%]">
+      <div className="w-[60%] sm:w-auto">
         <form className="max-w-full" onSubmit={handleSubmit}>
           <TextInput
             type="text"
@@ -74,9 +74,9 @@ export default function Header() {
         </form>
       </div>
 
-      <div className=" w-[30%] xs:w-auto flex gap-2 md:order-2">
+      <div className=" w-[30%] sm:w-auto flex gap-0 xs:gap-1 sm:gap-2 md:order-2">
         <Button
-          className="h-8 xs:h-10 inline"
+          className="h-10 inline"
           color="gray"
           pill
           onClick={() => dispatch(toggleTheme())}
