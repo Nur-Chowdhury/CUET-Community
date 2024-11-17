@@ -65,7 +65,7 @@ export default function Header() {
             </Link>
         </div>
 
-        <div className=''>
+        <div className='w-[60%]'>
             <form className='' onSubmit={handleSubmit}>
                 <TextInput
                     type='text'
