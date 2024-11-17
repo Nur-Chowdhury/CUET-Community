@@ -59,8 +59,8 @@ export default function Header() {
 
   return (
     <Navbar className=' w-full border-b-2 flex justify-between'>
-        <div className=''>
-            <Link to='/' className=' max-w-full self-center whitespace-nowrap'>
+        <div className='w-[10%]'>
+            <Link to='/' className=' self-center whitespace-nowrap'>
                 <img src={logo} alt='logo' className=' max-h-16' />
             </Link>
         </div>
