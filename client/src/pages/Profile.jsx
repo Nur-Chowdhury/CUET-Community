@@ -67,7 +67,7 @@ export default function Profile() {
                 </div>
             </div>
             <div className=' w-full max-h-[600px] flex flex-col md:flex-row mt-10 lg:pl-24' id='2'>
-                <div className=' w-1/3 flex flex-col gap-8'>
+                <div className= ' w-full md:w-1/3 flex flex-col gap-8'>
                     {(user?.homeTown || user?.currentCity) && <div className=' flex flex-col shadow-sm rounded-xl px-6 py-4 bg-gray-300 dark:bg-[rgb(11,11,11)] gap-4'>
                         {
                             user?.homeTown? (
@@ -146,7 +146,7 @@ export default function Profile() {
                         </div>)
                     }
                 </div>
-                <div className=' w-2/3 overflow-y-auto right-0 px-4' id='3'>
+                <div className=' w-full md:w-2/3 overflow-y-auto right-0 px-4' id='3'>
                     <div className=" w-4/5 px-4 flex flex-col gap-6 rounded-lg">
                         Posts
                         <UserPosts id={user?.studentID}/>
