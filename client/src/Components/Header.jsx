@@ -59,14 +59,14 @@ export default function Header() {
 
   return (
     <Navbar className=' w-full border-b-2 flex justify-between'>
-        <div className=' w-[10%]'>
+        <div className=''>
             <Link to='/' className=' max-w-full self-center whitespace-nowrap'>
                 <img src={logo} alt='logo' className=' max-h-16' />
             </Link>
         </div>
 
-        <div className=' w-[70%]'>
-            <form className=' max-w-full' onSubmit={handleSubmit}>
+        <div className=''>
+            <form className='' onSubmit={handleSubmit}>
                 <TextInput
                     type='text'
                     placeholder='Search...'
@@ -82,9 +82,9 @@ export default function Header() {
             <AiOutlineSearch className=' self-center w-8 h-10' />
         </Button> */}
 
-        <div className=' w-[20%] flex gap-2 md:order-2'>
+        <div className=' flex gap-2 md:order-2'>
             <Button 
-                className=' max-w-[45%] h-10 inline'
+                className=' h-10 inline'
                 color={'gray'}
                 pill
                 onClick={()=> dispatch(toggleTheme())}
