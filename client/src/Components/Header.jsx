@@ -58,37 +58,40 @@ export default function Header() {
     }
 
   return (
-    <Navbar className=' border-b-2'>
-        <Link to='/' className='self-center 
-        whitespace-nowrap'>
-            <img src={logo} alt='logo' className=' max-h-16' />
-        </Link>
+    <Navbar className=' w-full border-b-2'>
+        <div className=' w-[10%]'>
+            <Link to='/' className=' max-w-full self-center whitespace-nowrap'>
+                <img src={logo} alt='logo' className=' max-h-16' />
+            </Link>
+        </div>
 
-        <form onSubmit={handleSubmit}>
-            <TextInput
-                type='text'
-                placeholder='Search...'
-                rightIcon={AiOutlineSearch}
-                className='inline'
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-        </form>
+        <div className=' w-[65%]'>
+            <form className=' max-w-full' onSubmit={handleSubmit}>
+                <TextInput
+                    type='text'
+                    placeholder='Search...'
+                    rightIcon={AiOutlineSearch}
+                    className='inline'
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </form>
+        </div>
 
-        <Button className=' w-12 h-16 lg:hidden border-2'
+        {/* <Button className=' w-12 h-16 lg:hidden border-2'
             color=' gray' pill>
             <AiOutlineSearch className=' self-center w-8 h-10' />
-        </Button>
+        </Button> */}
 
-        <div className=' flex gap-2 md:order-2'>
+        <div className=' w-[25%] flex gap-2 md:order-2'>
             <Button 
-                className=' w-12 h-10 inline'
+                className=' max-w-[45%] h-10 inline'
                 color={'gray'}
                 pill
                 onClick={()=> dispatch(toggleTheme())}
             >
                 {theme === 'light' ? <FaMoon />: <FaSun />}
             </Button>
-            {currentUser ? (
+            <div className=' max-w-[45%]'>{currentUser ? (
                 <Dropdown 
                     arrowIcon={false}
                     inline
@@ -124,7 +127,7 @@ export default function Header() {
                     </Button>
                 </Link>
             )
-            }
+            }</div>
         </div>
     </Navbar>
   )
