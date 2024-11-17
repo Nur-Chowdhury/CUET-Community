@@ -146,8 +146,8 @@ export default function Profile() {
                         </div>)
                     }
                 </div>
-                <div className=' w-full md:w-2/3 overflow-y-auto right-0 px-4' id='3'>
-                    <div className=" w-4/5 px-4 flex flex-col gap-6 rounded-lg">
+                <div className=' w-full md:w-2/3 overflow-y-auto right-0 px-4 mt-4' id='3'>
+                    <div className=" w-full md:w-4/5 px-4 flex flex-col gap-6 rounded-lg">
                         Posts
                         <UserPosts id={user?.studentID}/>
                     </div>
