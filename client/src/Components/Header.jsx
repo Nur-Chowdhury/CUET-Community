@@ -82,7 +82,7 @@ export default function Header() {
             <AiOutlineSearch className=' self-center w-8 h-10' />
         </Button> */}
 
-        <div className=' w-[20%] flex justify-between md:order-2'>
+        <div className=' w-[20%] flex gap-2 md:order-2'>
             <Button 
                 className=' max-w-[45%] h-10 inline'
                 color={'gray'}
