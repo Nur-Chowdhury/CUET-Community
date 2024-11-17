@@ -62,7 +62,7 @@ export default function Header() {
         </Link>
       </div>
 
-      <div className="w-[60%] sm:w-auto">
+      <div className="w-[50%] sm:w-auto">
         <form className="max-w-full" onSubmit={handleSubmit}>
           <TextInput
             type="text"
