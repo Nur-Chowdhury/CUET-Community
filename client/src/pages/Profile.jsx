@@ -86,7 +86,7 @@ export default function Profile() {
                             ):(<></>)
                         }
                     </div>}
-                    {user?.education.length ? (
+                    {user?.education?.length ? (
                             <div className=' flex flex-col shadow-sm rounded-xl px-6 py-4 bg-gray-300 dark:bg-[rgb(11,11,11)]'>
                                 <h1 className=' text-2xl font-bold'>Education:</h1>
                                 {user?.education.map((edu, index) => (
@@ -114,7 +114,7 @@ export default function Profile() {
                             No Education Profile to Show...
                         </div>)
                     }
-                    {user?.work.length ? (
+                    {user?.work?.length ? (
                             <div className='w-full flex flex-col shadow-sm rounded-xl px-6 py-4 bg-gray-300 dark:bg-[rgb(11,11,11)]'>
                                 <h1 className=' text-2xl font-bold'>Work:</h1>
                                 {user?.work.map((wrk, index) => (

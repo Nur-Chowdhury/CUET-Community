@@ -93,15 +93,23 @@ export default function Header() {
                     arrowIcon={false}
                     inline
                     label = {
-                        <Avatar rounded />
+                        currentUser?.profile ? (
+                            <img
+                              src={currentUser?.profile}
+                              alt="User Profile"
+                              className="w-10 h-10 rounded-full object-cover"
+                            />
+                          ) : (
+                            <Avatar rounded />
+                        )
                     }
                 >
                     <Dropdown.Header>
                         <span className=' block text-sm'>
-                            @{currentUser.userName}
+                            @{currentUser?.userName}
                         </span>
                         <span className=' block text-sm font-medium truncate'>
-                            {currentUser.email}
+                            {currentUser?.email}
                         </span>
                     </Dropdown.Header>
                     <Link to={"/profile/"+ currentUser?.studentID}>
