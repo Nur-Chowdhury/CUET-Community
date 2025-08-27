@@ -4,6 +4,8 @@ import { errorHandler } from "../utils/errorHandler.js";
 import jwt from 'jsonwebtoken';
 
 export const signup = async (req, res, next) => {
+    console.log("hi");
+    
     const {
         firstName,
         lastName,

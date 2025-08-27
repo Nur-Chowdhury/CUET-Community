@@ -1,26 +1,19 @@
 import React, {useState, useRef, useEffect} from 'react'
-import {Button, Label, TextInput, Alert, Textarea} from 'flowbite-react'
+import {Button, TextInput, Alert, Textarea} from 'flowbite-react'
 import {CircularProgressbar} from 'react-circular-progressbar'
 import {useSelector, useDispatch} from 'react-redux'
 import profile from "../assets/userprofile.png"
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from 'firebase/storage';
-import { app } from '../firebase';
 import {updateStart, updateSuccess, updateFailure} from '../redux/slices/userSlice'
-import { IoAdd } from "react-icons/io5"
 import { PiPlusBold } from "react-icons/pi";
 import EducationEdit from '../Components/EducationEdit'
 import WorkEdit from '../Components/WorkEdit'
 import { updateUserRoute } from '../utils/ApiRoutes'
+import { supabase } from '../supabase';
+
 
 export default function EditProfile() {
 
   const [formData, setFormData] = useState({});
-  const [form, setForm] = useState({});
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
@@ -40,12 +33,15 @@ export default function EditProfile() {
 
   useEffect(() => {
     if (imageFile) {
-      uploadImage();
+      handleFileUpload();
     }
   }, [imageFile]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    setFormData((prevFormData) => ({
+        ...prevFormData,
+        [e.target.id]: e.target.value,
+    }));
   };
 
   const handleImageChange = (e) => {
@@ -56,22 +52,55 @@ export default function EditProfile() {
     }
   };
 
-  const uploadImage = async () => {
+  const handleFileUpload = async () => {
     setImageFileUploading(true);
     setImageFileUploadError(null);
-    const storage = getStorage(app);
-    const fileName = new Date().getTime() + imageFile.name;
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, imageFile);
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    const fileName = `${Date.now()}_${imageFile.name}`;
 
-        setImageFileUploadProgress(progress.toFixed(0));
-      },
-      (error) => {
+    const { data: signedUrlData, error: signedUrlError } = await supabase.storage
+        .from('img_bkt')
+        .createSignedUploadUrl(fileName);
+
+    if (signedUrlError) {
+      console.log('Failed to get signed URL:', signedUrlError.message);
+      setImageFileUploadError(
+        'Could not upload image (File must be less than 2MB)'
+      );
+      setImageFileUploadProgress(null);
+      setImageFile(null);
+      setImageFileUrl(null);
+      setImageFileUploading(false);
+      return;
+    }
+
+    const uploadUrl = signedUrlData?.signedUrl;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', uploadUrl, true);
+    xhr.setRequestHeader('Content-Type', imageFile.type);
+
+    xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+            const percent = Math.round((event.loaded / event.total) * 100);
+            setImageFileUploadProgress(percent);
+        }
+    };
+
+    xhr.onload = async () => {
+      if (xhr.status === 200) {
+        const { data: urlData } = supabase.storage
+            .from('img_bkt')
+            .getPublicUrl(fileName);
+
+        const publicUrl = urlData?.publicUrl;
+        setImageFileUrl(publicUrl);
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            profile: publicUrl,
+        }));
+        setImageFileUploading(false);
+      } else {
+        console.log("Upload failed with status:", xhr.status);
         setImageFileUploadError(
           'Could not upload image (File must be less than 2MB)'
         );
@@ -79,43 +108,50 @@ export default function EditProfile() {
         setImageFile(null);
         setImageFileUrl(null);
         setImageFileUploading(false);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setImageFileUrl(downloadURL);
-          setFormData({ ...formData, profile: downloadURL });
-          setImageFileUploading(false);
-        });
       }
-    );
+    };
+
+    xhr.onerror = () => {
+      console.error("XHR upload error");
+      setImageFileUploadError(
+        'Could not upload image (File must be less than 2MB)'
+      );
+      setImageFileUploadProgress(null);
+      setImageFile(null);
+      setImageFileUrl(null);
+      setImageFileUploading(false);
+    };
+
+    xhr.send(imageFile);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
+    let form = {};
     if(formData.profile){
-      setForm({
+      form = {
         row: "profile",
         data: formData.profile,
         type: "update",
-      });
+      };
     }
     else if(formData.homeTown){
-      setForm({
+      form = {
         row: "homeTown",
         data: formData.homeTown,
         type: "update",
-      });
+      };
     }
     else if(formData.currentCity){
-      setForm({
+      form = {
         row: "currentCity",
         data: formData.currentCity,
         type: "update",
-      });
+      };
     }
     else if(formData.institution){
-      setForm({
+      form = {
         row: "education",
         data: {
           institution: formData.institution,
@@ -124,11 +160,11 @@ export default function EditProfile() {
           description: formData.description 
         },
         type: "add",
-      });
+      };
     }
 
     else if(formData.company){
-      setForm({
+      form = {
         row: "work",
         data: {
           company: formData.company,
@@ -138,19 +174,19 @@ export default function EditProfile() {
           description: formData.description 
         },
         type: "add",
-      });
+      };
+    }
+    else {
+      setUpdateUserError('No changes made');
+      return;
     }
 
     setUpdateUserError(null);
     setUpdateUserSuccess(null);
 
-    if (Object.keys(form).length === 0) {
-      setUpdateUserError('No changes made');
-      return;
-    }
-
     try {
       dispatch(updateStart());
+      console.log(form);
       const res = await fetch(`${updateUserRoute}/${currentUser.studentID}`, {
         method: 'PUT',
         headers: {
@@ -158,7 +194,11 @@ export default function EditProfile() {
         },
         body: JSON.stringify(form),
       });
+      console.log(res);
+      
       const data = await res.json();
+      console.log(data);
+      
       if (!res.ok) {
         dispatch(updateFailure(data.message));
         setUpdateUserError(data.message);
@@ -166,12 +206,13 @@ export default function EditProfile() {
         dispatch(updateSuccess(data));
         setUpdateUserSuccess("User's profile updated successfully");
       }
-      setForm({});
       setFormData({});
       setCitycng(false);
       setHomecng(false);
       setAddEdu(false);
     } catch (error) {
+      console.log(error);
+      
       dispatch(updateFailure(error.message));
       setUpdateUserError(error.message);
     }
@@ -311,7 +352,7 @@ export default function EditProfile() {
             <div className='flex flex-col gap-1'>
               <h4>Time Period:</h4>
               <div>
-                From  <input type='number' id='from' className=' w-20 h-6' onChange={handleChange} required />     To  <input onChange={handleChange} type='number' id='to' className=' w-20 h-6' />
+                From  <input type='number' id='from' className=' w-20 h-6 text-black' onChange={handleChange} required />     To  <input onChange={handleChange} type='number' id='to' className=' w-20 h-6 text-black' />
               </div>
             </div>
 
@@ -333,11 +374,13 @@ export default function EditProfile() {
             </div>
           </form>
         )}
-        {currentUser?.education?.length &&(
+        {currentUser?.education?.length>0 ? (
           currentUser?.education.map((edu, index) => (
             <EducationEdit edu={edu} key={index} />
-          ))
-        )}
+          ))):(
+            <div>No Education Background Added</div>
+          )
+        }
       </div>
 
       {/* work */}
@@ -369,7 +412,7 @@ export default function EditProfile() {
             <div className='flex flex-col gap-1'>
               <h4>Time Period:</h4>
               <div>
-                From  <input type='number' id='from' className=' w-20 h-6' onChange={handleChange} required />     To  <input onChange={handleChange} type='number' id='to' className=' w-20 h-6' />
+                From  <input type='number' id='from' className=' w-20 h-6 text-black' onChange={handleChange} required />     To  <input onChange={handleChange} type='number' id='to' className=' w-20 h-6 text-black' />
               </div>
             </div>
 
@@ -402,10 +445,11 @@ export default function EditProfile() {
             </div>
           </form>
         )}
-        {currentUser?.work?.length &&(
+        {currentUser?.work?.length>0 ?(
           currentUser?.work.map((wrk, index) => (
             <WorkEdit wrk={wrk} key={index} />
-          ))
+          ))):(
+          <div>No Work Background Added</div>
         )}
       </div>
       {updateUserSuccess && (

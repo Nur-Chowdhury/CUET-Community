@@ -109,54 +109,39 @@ export const find = async (req, res, next) => {
 }
 
 export const updateUser = async (req, res, next) => {
-
     const id = req.params.userId;
+
     if (req.user.id !== req.params.userId) {
-        return next(errorHandler(403, 'You are not allowed to update this user'));
+        return next(errorHandler(403, "You are not allowed to update this user"));
     }
 
-    const {row, data, type} = req.body;
-    if(type == "update"){
-        try {
-            const user = await User.findOne({studentID: id})
-            const updatedUser = await User.findByIdAndUpdate(
-                user._id,
-                {
-                    [row]: data,
-                },
-                {new: true}
-            );
-            const { password, ...rest } = updatedUser._doc;
-            res.status(200).json(rest);
-        } catch (error) {
-            next(error);
-        }
-    }
-    else{
-        const user = await User.findOne({studentID: id});
-        data.user = user._id;
-        if(row=='education'){
-            
-            try {
-                user.education.push(data);
+    const { row, data, type } = req.body;
+    console.log(id, row, data, type);
+
+    try {
+        const user = await User.findOne({ studentID: id });
+        if (!user) return next(errorHandler(404, "User not found"));
+
+        if (type === "update") {
+            user[row] = data;
+            await user.save();
+        } else {
+            if (row === "education" || row === "work") {
+                if (typeof data !== "object") {
+                    return next(errorHandler(400, "Invalid data format"));
+                }
+                data.user = user._id;
+                user[row].push(data);
                 await user.save();
-                const updatedUser = await User.findById(user._id);
-                const { password, ...rest } = updatedUser._doc;
-                res.status(200).json(rest);
-            } catch (error) {
-                next(error);
+            } else {
+                return next(errorHandler(400, "Invalid row for add operation"));
             }
         }
-        else if(row=='work'){
-            try {
-                user.work.push(data);
-                await user.save();
-                const updatedUser = await User.findById(user._id);
-                const { password, ...rest } = updatedUser._doc;
-                res.status(200).json(rest);
-            } catch (error) {
-                next(error);
-            }
-        }
+
+        const updatedUser = await User.findById(user._id);
+        const { password, ...rest } = updatedUser._doc;
+        res.status(200).json(rest);
+    } catch (error) {
+        next(error);
     }
-}
+};

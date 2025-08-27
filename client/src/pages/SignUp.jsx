@@ -16,6 +16,7 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if(!formData.firstName||
       !formData.lastName||
       !formData.userName||
@@ -28,14 +29,14 @@ export default function SignUp() {
 
     try {
       setLoading(true);
-      setErrorMessage(null);
+      setErrorMessage(null);      
       const res = await fetch(`${signupRoute}`,{
         method: 'POST',
         headers:{'Content-Type': 'application/json'},
         body: JSON.stringify(formData),
       });
-
       const data = await res.json();
+      
       if(data.success ===false){
         setLoading(false);
         return setErrorMessage(data.message);
@@ -48,6 +49,8 @@ export default function SignUp() {
 
     } catch (error) {
       setErrorMessage(error.message);
+      console.log(error);
+      
       setLoading(false);
     }
   }

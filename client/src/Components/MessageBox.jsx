@@ -7,8 +7,6 @@ import {BsEmojiSmileFill} from "react-icons/bs"
 import { IoSend } from "react-icons/io5";
 import { IoMdAttach } from "react-icons/io";
 import {Textarea} from 'flowbite-react';
-import {getStorage, ref, uploadBytesResumable, getDownloadURL} from 'firebase/storage';
-import {app} from '../firebase'
 import { setReceiver, unsetReceiver } from '../redux/slices/userSlice'
 import ChatInput from './ChatInput'
 import { getAllMessagesRoute } from '../utils/ApiRoutes'

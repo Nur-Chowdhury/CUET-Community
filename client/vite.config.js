@@ -8,10 +8,20 @@ import react from '@vitejs/plugin-react-swc'
 //   },
 // };
 export default defineConfig({
+  envDir: '../',
   plugins: [react()],
   resolve: {
     alias: {
       crypto: 'crypto-browserify',
+    },
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5174', // backend
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 });
