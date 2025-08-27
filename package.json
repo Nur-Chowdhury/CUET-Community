@@ -8,7 +8,7 @@
     "dev": "nodemon server/index.js",
     "start": "cross-env NODE_ENV=production node server/index.js",
     "client": "npm run dev --prefix client",
-    "build": "node -v && npm install && npm install --prefix client && npm run build --prefix client"
+    "build": "npm install && npm install --prefix client --include=dev && npm run build --prefix client"
   },
   "engines": {
     "node": ">=18 <21",
